@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 interface GPUCardProps {
   name: string;
@@ -11,6 +11,8 @@ interface GPUCardProps {
 }
 
 export function GPUCard({ name, price, vendor, memory, availability }: GPUCardProps) {
+  const history = useHistory();
+
   const getAvailabilityColor = (status: string) => {
     switch (status) {
       case 'available':
@@ -22,6 +24,13 @@ export function GPUCard({ name, price, vendor, memory, availability }: GPUCardPr
       default:
         return 'bg-gray-500';
     }
+  };
+
+  const handleRentClick = () => {
+    history.push({
+      pathname: '/stock-ticker',
+      state: { name, price, vendor, memory, availability }
+    });
   };
 
   return (
@@ -38,7 +47,7 @@ export function GPUCard({ name, price, vendor, memory, availability }: GPUCardPr
       
       <div className="mb-4">
         <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-          {price.toFixed(2)} credits
+          ${price.toFixed(2)}
         </div>
         <p className="text-sm text-gray-500">per hour</p>
       </div>
@@ -48,11 +57,12 @@ export function GPUCard({ name, price, vendor, memory, availability }: GPUCardPr
           <p className="text-sm text-gray-500">Vendor</p>
           <p className="font-semibold text-gray-900">{vendor}</p>
         </div>
-        <Link to={'/gpu/${id}'}>
-        <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium">
+        <button 
+          onClick={handleRentClick} 
+          className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium"
+        >
           Rent
         </button>
-        </Link>
       </div>
     </Card>
   );
