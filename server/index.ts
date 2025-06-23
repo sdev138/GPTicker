@@ -10,11 +10,28 @@ const stripe = require('stripe')()
 const session = await stripe.checkout.sessions.create({
     line_items: [
         {
-            price: 'credits_100', // the value in the quotation marks is the price id '{{PRICE_ID}}'
+            price: 'credits_100', 
+            quantity: 1,
+        },
+        {
+            price: 'credits_50',
+            quantity: 1,
+        },
+        {
+            price: 'credits_10',
+            quantity: 1,
+        },
+        {
+            price: 'credits_20',
+            quantity: 1,
+        },
+        {
+            price: 'credits_150',
             quantity: 1,
         }
     ],
     mode: 'payment',
+    // put the domain here once verification is approved
     success_url: `${YOUR_DOMAIN}?success=true`,
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
 });
